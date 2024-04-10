@@ -1,0 +1,12 @@
+<openapi xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://swagger.io/v3/openapi.json https://raw.githubusercontent.com/OAI/OpenAPI-Specification/master/schemas/3.0.1/openapi.json" version="3.0.1">
+  <info>
+    <title>My API</title>
+    <version>1.0</version>
+  </info>
+  <paths>
+    <!-- API paths and operations go here -->
+  </paths>
+  <components>
+    <!-- Schemas, responses, parameters, etc. go here -->
+  </components>
+</openapi>
