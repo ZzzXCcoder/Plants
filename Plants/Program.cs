@@ -25,10 +25,10 @@ services.AddControllersWithViews();
 
 services.AddSwaggerGen(config =>
 {
-    // путь до файла xml
-    var xmlFile = "D:/Plants-master/Plants.xml"; 
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    config.IncludeXmlComments(xmlPath);
+    // путь до файла xml file
+    var xmlFile = "Plants.xml"; 
+    
+    config.IncludeXmlComments(xmlFile);
     config.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
 });
 

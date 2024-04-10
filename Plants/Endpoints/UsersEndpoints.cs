@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Plants.Contract;
 using Plants.Jwt;
@@ -32,16 +33,17 @@ namespace Plants.Endpoints
             context.Response.Cookies.Append("JWTToken", token);
             return Results.Ok(token);
         }
-        private static async Task<Account> GetAccount(UsersService usersService, HttpContext context)
+        private static async Task<JsonResult> GetAccount(UsersService usersService, HttpContext context)
         {
             var user = context.User;
-            
+
             // Получение claims пользователя
             var claims = user.Claims;
             var idClaim = claims.FirstOrDefault(c => c.Type == "userId");
-               var id = Guid.Parse(idClaim.Value);
-            var us = usersService.GetAccount(id);
-            return await us;
+            var id = Guid.Parse(idClaim.Value);
+
+            var us = await usersService.GetAccount(id);
+            return new JsonResult(Convert.ToString(us.Id), us.Login);
         }
     }
 
