@@ -4,10 +4,7 @@ using Plants.Interfaces.auth;
 using Plants.Jwt;
 using Plants.Repositories;
 using Plants.Services;
-using System.Reflection;
-using Microsoft.AspNetCore.Routing;
 using WebApplication1.Context;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.OpenApi.Models;
 
 
@@ -28,7 +25,8 @@ services.AddControllersWithViews();
 
 services.AddSwaggerGen(config =>
 {
-    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    // путь до файла xml
+    var xmlFile = "D:/Plants-master/Plants.xml"; 
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     config.IncludeXmlComments(xmlPath);
     config.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
