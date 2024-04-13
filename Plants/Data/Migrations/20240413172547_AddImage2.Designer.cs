@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebApplication1.Context;
@@ -11,9 +12,11 @@ using WebApplication1.Context;
 namespace Plants.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240413172547_AddImage2")]
+    partial class AddImage2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -56,6 +59,7 @@ namespace Plants.Data.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<byte[]>("Image")
+                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.Property<string>("Plant_description")
@@ -86,6 +90,7 @@ namespace Plants.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<byte[]>("Image")
+                        .IsRequired()
                         .HasColumnType("bytea");
 
                     b.Property<string>("Login")
