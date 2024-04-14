@@ -11,13 +11,14 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 services.AddApiAuthentication(builder.Configuration);
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 
 services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 services.AddScoped<IUserRepository, UserRepository>();
 services.AddScoped<UsersService>();
 services.AddScoped<IJwtProvider, JwtProvider>();
 services.AddScoped<IPasswordHasher, PasswordHasher>();
+
 
 services.AddAutoMapper(typeof(Program));
 services.AddEndpointsApiExplorer();
@@ -60,6 +61,7 @@ app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "v1");
     options.RoutePrefix = string.Empty;
+
 });
 
 app.UseEndpoints(endpoints => {
