@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Plants.Contract;  
 using Plants.Services;
 using WebApplication1.Models;
@@ -16,8 +17,7 @@ namespace Plants.Endpoints
                 .RequireAuthorization();
             endpoints.MapGet("/api/GetAllAccounts", GetAllUsers);
             endpoints.MapDelete("/api/DeleteAccount", DeleteUser);
-            //endpoints.MapPost("/api/AddImage", AddImage)
-            //    .RequireAuthorization()aaaa;
+            //endpoints.MapPost("/api/AddImage", AddImage);
 
             return endpoints;
         }
@@ -68,12 +68,19 @@ namespace Plants.Endpoints
         {
             return await usersService.GetAllAccounts(context);
         }
-        //private static async Task<IResult> AddImage(UsersService usersService, HttpContext context, IFormFile file)
+        /// <summary>
+        /// Загрузите изображение
+        /// </summary>
+        /// <param name = "file" > Файл изображения(PNG или JPEG)</param>
+        /// <returns>Статус загрузки</returns>
+        //[HttpPost]
+        //[Route("api/upload-image")]
+        //public static async Task<IResult> AddImage(UsersService usersService, HttpContext context, IFormFile file)
         //{
         //    var user = context.User;
 
-        //    // Получение claims пользователя
-        //    var claims = user.Claims;
+        //    Получение claims пользователя
+        //   var claims = user.Claims;
         //    var idClaim = claims.FirstOrDefault(c => c.Type == "userId");
 
         //    if (idClaim == null)
@@ -91,7 +98,7 @@ namespace Plants.Endpoints
     }
 
 
-    
+
 }
 
     

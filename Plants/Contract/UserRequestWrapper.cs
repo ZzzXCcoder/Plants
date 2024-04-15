@@ -13,7 +13,7 @@ public class UserRequestWrapper
 
     public string Login => us.Login;
 
-    public byte[] Image => us.Image;
+    public string Image => us.ImagePath;
 
     // Дополнительные свойства и методы...
 }

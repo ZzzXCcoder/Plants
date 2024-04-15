@@ -15,10 +15,12 @@ namespace Plants.Repositories
     {
         private readonly ApplicationDbContext _context;
         private readonly IMapper _mapper;
-        public UserRepository(ApplicationDbContext context, IMapper mapper)
+        private readonly IWebHostEnvironment _webHostEnvironment;
+        public UserRepository(ApplicationDbContext context, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             _context = context;
             _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
         }
         public async Task Add(Account account)
         {
@@ -45,14 +47,17 @@ namespace Plants.Repositories
 
             return AccountEntity;
         }
-        public async Task<IResult> AddImage(IFormFile file, Account account)
+        public async Task<IResult> AddImage( IFormFile file, Account account)
         {
-            using (var memoryStream = new MemoryStream())
+            if (account == null)
             {
-                await file.CopyToAsync(memoryStream);
-                account.Image = memoryStream.ToArray();
+                throw new Exception("Нет такого аккаунта");
             }
-
+            string folder = "/Plats_image/Cover";
+            folder += Guid.NewGuid().ToString() + file.FileName; 
+            string serverFolder = Path.Combine(_webHostEnvironment.WebRootPath, folder);
+            file.CopyToAsync(new FileStream(serverFolder, FileMode.Create));
+            account.ImagePath = serverFolder;
             _context.Update(account);
             await _context.SaveChangesAsync();
             return Results.Ok();
@@ -67,6 +72,7 @@ namespace Plants.Repositories
 
             _context.Accounts.Remove(accountEntity);  // Use DbSet.Remove method directly
             await _context.SaveChangesAsync();
+           
 
             return Results.Ok();
         }
