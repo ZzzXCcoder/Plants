@@ -20,6 +20,8 @@ services.AddScoped<IJwtProvider, JwtProvider>();
 services.AddScoped<IPasswordHasher, PasswordHasher>();
 services.AddScoped<IPlantsRepository, PlantRepository>();
 services.AddScoped<PlantsService>();
+services.AddScoped<IUser_and_PlantsRepository, User_and_PlantsRepository>();
+services.AddScoped<Users_and_PlantsService>();
 
 
 services.AddAutoMapper(typeof(Program));
@@ -70,6 +72,7 @@ app.UseEndpoints(endpoints => {
     endpoints.MapControllers();
     endpoints.MapUsersEndpoints();
     endpoints.MapPlantsEndpoints();
+    endpoints.MapPlant_and_UserEndpoints();
 });
 
 

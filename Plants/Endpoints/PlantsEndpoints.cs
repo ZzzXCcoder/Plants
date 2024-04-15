@@ -3,6 +3,7 @@ using Plants.Contract;
 using Plants.Repositories;
 using Plants.Services;
 using System.Security.Principal;
+using WebApplication1.Models;
 
 
 namespace Plants.Endpoints
@@ -12,6 +13,8 @@ namespace Plants.Endpoints
         public static IEndpointRouteBuilder MapPlantsEndpoints(this IEndpointRouteBuilder endpoints)
         {
             endpoints.MapPost("/api/AddPlant/Plant", AddPlant);
+            endpoints.MapGet("/api/GetAllPlants/Plant", GetAllPlants);
+            endpoints.MapDelete("/api/GetAllPlants/Plant", DeletePlant);
 
             return endpoints;
         }
@@ -20,6 +23,16 @@ namespace Plants.Endpoints
             
             await plantsServices.Add(new Guid(), request.Plant_name, request.Plant_description, request.Plant_type, request.ImagePath);
 
+            return Results.Ok();
+        }
+        private static async Task<IEnumerable<Plant>> GetAllPlants(HttpContext context, PlantsService plantsServices)
+        {
+           return await plantsServices.GetAllAccounts(context);
+        }
+        private static async Task<IResult> DeletePlant(PlantsService plantsServices, HttpContext context, Guid Id)
+        {
+
+            await plantsServices.DeleteAccount(Id, context);
             return Results.Ok();
         }
     }
