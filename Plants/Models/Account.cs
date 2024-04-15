@@ -12,7 +12,7 @@ namespace WebApplication1.Models
             Login = login;
             HashedPassword = hashedPassword;
         }
-        public Account(Guid id, string name, string login, string hashedPassword, byte[] Image)
+        public Account(Guid id, string name, string login, string hashedPassword, string Image)
         {
             Id = id;
             Name = name;
@@ -28,7 +28,7 @@ namespace WebApplication1.Models
         public string Login { get; set; }
 
         public string HashedPassword { get; set; }
-        public byte[] Image { get; set; } = new byte[0];
+        public string ImagePath { get; set; } = "";
 
         public List<Account_and_plant> accounts_in_table { get; set; }
 

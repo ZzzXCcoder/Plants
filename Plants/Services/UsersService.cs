@@ -54,7 +54,7 @@ namespace Plants.Services
         }
         public async Task<IResult> AddImage(IFormFile file, Account account)
         {
-            _userRepository.AddImage(file, account);
+             _userRepository.AddImage(file, account);
             return Results.Ok();
 
         }
@@ -67,7 +67,7 @@ namespace Plants.Services
         {
             var accounts = await _userRepository.GetAllAccounts(context);
 
-            var formattedAccounts =  accounts.Select(a => new Account(a.Id, a.Name, a.Login, a.HashedPassword, a.Image is DBNull ? new byte[0] : (byte[])a.Image));
+            var formattedAccounts =  accounts.Select(a => new Account(a.Id, a.Name, a.Login, a.HashedPassword, a.ImagePath));
 
             return formattedAccounts;
         }

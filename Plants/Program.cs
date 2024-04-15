@@ -6,18 +6,20 @@ using Plants.Repositories;
 using Plants.Services;
 using WebApplication1.Context;
 using Microsoft.OpenApi.Models;
-
+using Microsoft.AspNetCore.Http;
 
 var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
+
 services.AddApiAuthentication(builder.Configuration);
 builder.Services.AddControllers();
-
 services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 services.AddScoped<IUserRepository, UserRepository>();
 services.AddScoped<UsersService>();
 services.AddScoped<IJwtProvider, JwtProvider>();
 services.AddScoped<IPasswordHasher, PasswordHasher>();
+services.AddScoped<IPlantsRepository, PlantRepository>();
+services.AddScoped<PlantsService>();
 
 
 services.AddAutoMapper(typeof(Program));
@@ -34,7 +36,7 @@ services.AddSwaggerGen(config =>
 });
 
 var app = builder.Build();
-
+app.UseStaticFiles();
 // Apply migrations
 using (var scope = app.Services.CreateScope())
 {
@@ -67,9 +69,10 @@ app.UseSwaggerUI(options =>
 app.UseEndpoints(endpoints => {
     endpoints.MapControllers();
     endpoints.MapUsersEndpoints();
+    endpoints.MapPlantsEndpoints();
 });
 
-app.UseStaticFiles();
+
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Accounts}/{action=Index}/{id?}");
