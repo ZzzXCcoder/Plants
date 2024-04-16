@@ -9,6 +9,7 @@ namespace Plants.Endpoints
         {
             endpoints.MapPost("/api/AddPlantToUser/Plant_and_User", AddPlantToUser);
             endpoints.MapPost("/api/EditWateringTime/Plant_and_User", SetWateringTime);
+            endpoints.MapPost("/api/Watering/Plant_and_User", Watering);
 
             return endpoints;
         }
@@ -31,7 +32,7 @@ namespace Plants.Endpoints
             return Results.Ok();
         }
 
-        private static async Task<TimeSpan> SetWateringTime(Users_and_PlantsService users_And_PlantsService, HttpContext context, Guid plant, string dateTime)
+        private static async Task<DateTime> SetWateringTime(Users_and_PlantsService users_And_PlantsService, HttpContext context, Guid plant, string dateTime, double wateringIntervalInHours)
         {
             var user = context.User;
 
@@ -41,17 +42,40 @@ namespace Plants.Endpoints
 
             if (idClaim == null)
             {
-                return DateTime.MinValue.TimeOfDay;
+                throw new Exception("Нет такого пользователя");
             }
 
             var id = Guid.Parse(idClaim.Value);
+            await users_And_PlantsService.SetWateringInterval(plant, id, context, wateringIntervalInHours);
             string timeString = dateTime;
-            string format = "HH:mm";
+            string format = "yyyy-MM-dd HH:mm";
             DateTime wateringTime = DateTime.ParseExact(timeString, format, CultureInfo.InvariantCulture, DateTimeStyles.None);
             wateringTime = wateringTime.ToUniversalTime();
             return await (users_And_PlantsService.SetWateringTime(plant, id, context, wateringTime));
 
 
         }
+        private static async Task<string[]> Watering(Users_and_PlantsService users_And_PlantsService, HttpContext context, Guid plant)
+        {
+            var user = context.User;
+            // Получение claims пользователя
+            var claims = user.Claims;
+            var idClaim = claims.FirstOrDefault(c => c.Type == "userId");
+
+            if (idClaim == null)
+            {
+                throw new Exception("Нет такого пользователя");
+            }
+
+            var id = Guid.Parse(idClaim.Value);
+            var nextTime = await users_And_PlantsService.CalculateTimeToNextWatering(plant, id, context);
+            var progress = await users_And_PlantsService.AddToProgress(plant, id, context);
+            var result = new string[2];
+            result[0] = Convert.ToString(nextTime);
+            result[1] = Convert.ToString(progress);
+            return result;
+        }
+
+
     }
 }

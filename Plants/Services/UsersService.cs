@@ -7,6 +7,7 @@ using Plants.Services;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Http.HttpResults;
 using System.Linq;
+using Plants.Contract;
 namespace Plants.Services
 {
     public class UsersService 
@@ -72,5 +73,13 @@ namespace Plants.Services
             return formattedAccounts;
         }
 
+        public async Task<List<UserPlant>> GetAccountandPlants(Guid id, HttpContext context)
+        {
+           return await _userRepository.GetAccountandPlants(id, context);
+        }
+        public async Task<List<PlantforUser>> GetAccountandPlants2(Guid id, HttpContext context)
+        {
+            return await _userRepository.GetAccountandPlants2(id, context);
+        }
     }
 }

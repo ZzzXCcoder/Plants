@@ -1,4 +1,5 @@
-﻿using WebApplication1.Models;
+﻿using Plants.Contract;
+using WebApplication1.Models;
 
 namespace Plants.Interfaces.auth
 
@@ -14,5 +15,7 @@ namespace Plants.Interfaces.auth
 
         public Task<IResult> DeleteAccount(Guid id, HttpContext context);
         public  Task<IEnumerable<Account>> GetAllAccounts(HttpContext context);
+        public Task<List<UserPlant>> GetAccountandPlants(Guid id, HttpContext context);
+        Task<List<PlantforUser>> GetAccountandPlants2(Guid id, HttpContext context);
     }
 }

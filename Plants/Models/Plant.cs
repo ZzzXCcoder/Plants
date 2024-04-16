@@ -1,4 +1,5 @@
 ﻿using Plants.Models;
+using System.Text.Json.Serialization;
 
 public class Plant
 {
@@ -7,6 +8,7 @@ public class Plant
     public string Plant_description { get; set; }
     public string Plant_type { get; set; }
     public string ImagePath { get; set; } = null;
+    [JsonIgnore]
     public List<Account_and_plant> plant_in_table { get; set; }
 
     public Plant(Guid id, string plant_name, string plant_description, string plant_type, string image_path)

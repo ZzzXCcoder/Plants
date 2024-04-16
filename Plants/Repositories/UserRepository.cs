@@ -2,6 +2,7 @@
 using CsQuery.Engine.PseudoClassSelectors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualStudio.Web.CodeGenerators.Mvc.Templates.BlazorIdentity.Pages;
+using Plants.Contract;
 using Plants.Interfaces.auth;
 using System.IO;
 using System.Linq.Expressions;
@@ -84,5 +85,60 @@ namespace Plants.Repositories
                 .ToListAsync();
             return accounts;
         }
+        public async Task<List<UserPlant>> GetAccountandPlants(Guid id, HttpContext context)
+        {
+            var accountAndPlantEntities = await _context.Accounts_and_plants
+                .Where(a => a.AccountId == id)
+                .ToListAsync();
+            var plantIds = accountAndPlantEntities.Select(a => a.PlantId).ToList();
+            var plants = await _context.Plants
+                .Where(p => plantIds.Contains(p.Id))
+                .ToListAsync();
+
+            var account = await _context.Accounts
+                .FirstOrDefaultAsync(a => a.Id == id);
+            UserRequestWrapper userRequest = new UserRequestWrapper(account);
+            var userPlants = new List<UserPlant>();
+            userPlants.Add(new UserPlant
+            {
+                Plant = null,
+                Account = userRequest
+            }) ;
+            foreach (var plant in plants)
+            {
+                userPlants.Add(new UserPlant
+                {
+                    Plant = plant,
+                });
+            }
+
+            return userPlants;
+        }
+        public async Task<List<PlantforUser>> GetAccountandPlants2(Guid id, HttpContext context)
+        {
+            var accountAndPlantEntities = await _context.Accounts_and_plants
+                .Where(a => a.AccountId == id)
+                .ToListAsync();
+            var plantIds = accountAndPlantEntities.Select(a => a.PlantId).ToList();
+            var plants = await _context.Plants
+                .Where(p => plantIds.Contains(p.Id))
+                .ToListAsync();
+
+            var account = await _context.Accounts
+                .FirstOrDefaultAsync(a => a.Id == id);
+            UserRequestWrapper userRequest = new UserRequestWrapper(account);
+            var userPlants = new List<PlantforUser>();
+
+            foreach (var plant in plants)
+            {
+                userPlants.Add(new PlantforUser
+                {
+                    Plant = plant,
+                });
+            }
+
+            return userPlants;
+        }
+
     }
 }

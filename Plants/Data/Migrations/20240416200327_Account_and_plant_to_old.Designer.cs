@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WebApplication1.Context;
@@ -11,9 +12,11 @@ using WebApplication1.Context;
 namespace Plants.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240416200327_Account_and_plant_to_old")]
+    partial class Account_and_plant_to_old
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -60,9 +63,6 @@ namespace Plants.Data.Migrations
 
                     b.Property<Guid>("PlantId")
                         .HasColumnType("uuid");
-
-                    b.Property<double>("wateringIntervalInHours")
-                        .HasColumnType("double precision");
 
                     b.Property<double>("watering_rate")
                         .HasColumnType("double precision");

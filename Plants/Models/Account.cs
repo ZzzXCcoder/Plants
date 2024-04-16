@@ -29,7 +29,7 @@ namespace WebApplication1.Models
 
         public string HashedPassword { get; set; }
         public string ImagePath { get; set; } = "";
-
+        [JsonIgnore]
         public List<Account_and_plant> accounts_in_table { get; set; }
 
         public static Account Creaate (Guid id, string name, string login, string hashedPassword)

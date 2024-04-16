@@ -11,8 +11,6 @@ public class UserRequestWrapper
 
     public string Name => us.Name;
 
-    public string Login => us.Login;
-
     public string Image => us.ImagePath;
 
     // Дополнительные свойства и методы...

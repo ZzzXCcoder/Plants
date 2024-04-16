@@ -17,6 +17,8 @@ namespace Plants.Endpoints
                 .RequireAuthorization();
             endpoints.MapGet("/api/GetAllAccounts", GetAllUsers);
             endpoints.MapDelete("/api/DeleteAccount", DeleteUser);
+            endpoints.MapGet("/api/GetAccountWithPlants", GetUserPlantsByUserId);
+            endpoints.MapGet("/api/GetAccountWithPlants2", GetUserPlantsByUserId2);
             //endpoints.MapPost("/api/AddImage", AddImage);
 
             return endpoints;
@@ -68,6 +70,42 @@ namespace Plants.Endpoints
         {
             return await usersService.GetAllAccounts(context);
         }
+        private static async Task<List<PlantforUser>> GetUserPlantsByUserId2(UsersService usersService, HttpContext context)
+        {
+            var user = context.User;
+
+            // Получение claims пользователя
+            var claims = user.Claims;
+            var idClaim = claims.FirstOrDefault(c => c.Type == "userId");
+
+            if (idClaim == null)
+            {
+                return null;
+            }
+
+            var id = Guid.Parse(idClaim.Value);
+
+            return await usersService.GetAccountandPlants2(id, context);
+
+        }
+        private static async Task<List<UserPlant>> GetUserPlantsByUserId(UsersService usersService, HttpContext context)
+        {
+            var user = context.User;
+
+            // Получение claims пользователя
+            var claims = user.Claims;
+            var idClaim = claims.FirstOrDefault(c => c.Type == "userId");
+
+            if (idClaim == null)
+            {
+                return null;
+            }
+
+            var id = Guid.Parse(idClaim.Value);
+
+            return await usersService.GetAccountandPlants(id, context);
+        }
+
         /// <summary>
         /// Загрузите изображение
         /// </summary>
@@ -95,6 +133,7 @@ namespace Plants.Endpoints
 
         //    return Results.Ok();
         //}
+
     }
 
 
